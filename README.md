@@ -1,7 +1,7 @@
 # Build Flutter Apps Fast with Riverpod, Firebase, Hooks, and Freezed
 
-[YouTube Video](https://github.com/MarcusNg/flutter_shopping_list.git)
+[YouTube Video](https://youtu.be/vrPk6LB9bjo)
 
-[Firebase Setup Video](https://www.youtube.com/watch?v=LnpGU8vj7TI)
+[Firebase Setup Video](https://youtu.be/LnpGU8vj7TI)
 
 [Flutter Courses](https://launchclub.io)
