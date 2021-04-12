@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
 class HomeScreen extends HookWidget {
   @override
   Widget build(BuildContext context) {
-    final authControllerState = useProvider(authControllerProvider.state);
+    final authControllerState = useProvider(authControllerProvider);
     final itemListFilter = useProvider(itemListFilterProvider);
     final isObtainedFilter = itemListFilter.state == ItemListFilter.obtained;
     return Scaffold(
@@ -38,7 +38,7 @@ class HomeScreen extends HookWidget {
         leading: authControllerState != null
             ? IconButton(
                 icon: const Icon(Icons.logout),
-                onPressed: () => context.read(authControllerProvider).signOut(),
+                onPressed: () => context.read(authControllerProvider.notifier).signOut(),
               )
             : null,
         actions: [
@@ -115,14 +115,14 @@ class AddItemDialog extends HookWidget {
                 ),
                 onPressed: () {
                   isUpdating
-                      ? context.read(itemListControllerProvider).updateItem(
+                      ? context.read(itemListControllerProvider.notifier).updateItem(
                             updatedItem: item.copyWith(
                               name: textController.text.trim(),
                               obtained: item.obtained,
                             ),
                           )
                       : context
-                          .read(itemListControllerProvider)
+                          .read(itemListControllerProvider.notifier)
                           .addItem(name: textController.text.trim());
                   Navigator.of(context).pop();
                 },
@@ -143,7 +143,7 @@ class ItemList extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final itemListState = useProvider(itemListControllerProvider.state);
+    final itemListState = useProvider(itemListControllerProvider);
     final filteredItemList = useProvider(filteredItemListProvider);
     return itemListState.when(
       data: (items) => items.isEmpty
@@ -184,12 +184,12 @@ class ItemTile extends HookWidget {
       trailing: Checkbox(
         value: item.obtained,
         onChanged: (val) => context
-            .read(itemListControllerProvider)
+            .read(itemListControllerProvider.notifier)
             .updateItem(updatedItem: item.copyWith(obtained: !item.obtained)),
       ),
       onTap: () => AddItemDialog.show(context, item),
       onLongPress: () =>
-          context.read(itemListControllerProvider).deleteItem(itemId: item.id!),
+          context.read(itemListControllerProvider.notifier).deleteItem(itemId: item.id!),
     );
   }
 }
@@ -212,7 +212,7 @@ class ItemListError extends StatelessWidget {
           const SizedBox(height: 20.0),
           ElevatedButton(
             onPressed: () => context
-                .read(itemListControllerProvider)
+                .read(itemListControllerProvider.notifier)
                 .retrieveItems(isRefreshing: true),
             child: const Text('Retry'),
           ),

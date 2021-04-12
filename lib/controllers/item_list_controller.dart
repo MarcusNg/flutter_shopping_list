@@ -14,7 +14,7 @@ final itemListFilterProvider =
 
 final filteredItemListProvider = Provider<List<Item>>((ref) {
   final itemListFilterState = ref.watch(itemListFilterProvider).state;
-  final itemListState = ref.watch(itemListControllerProvider.state);
+  final itemListState = ref.watch(itemListControllerProvider);
   return itemListState.maybeWhen(
     data: (items) {
       switch (itemListFilterState) {
@@ -30,9 +30,10 @@ final filteredItemListProvider = Provider<List<Item>>((ref) {
 
 final itemListExceptionProvider = StateProvider<CustomException?>((_) => null);
 
-final itemListControllerProvider = StateNotifierProvider<ItemListController>(
+final itemListControllerProvider =
+    StateNotifierProvider<ItemListController, AsyncValue<List<Item>>>(
   (ref) {
-    final user = ref.watch(authControllerProvider.state);
+    final user = ref.watch(authControllerProvider);
     return ItemListController(ref.read, user?.uid);
   },
 );
